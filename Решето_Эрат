@@ -1,0 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+bool BB[30000];
+int a, b, c;
+scanf("%i", &a);
+for (b = 0; b<a; b++)
+{
+BB[b] = 1;
+}
+
+for (b = 2; b <= a; b++){
+if (BB[b] == 1)
+{
+for (c = b; c <= a; c += b){
+BB[c] = 0;
+}
+printf("%i ", b);
+}
+}
+
+return 0;
+}
