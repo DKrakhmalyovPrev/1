@@ -1,0 +1,46 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<cstdlib>
+#include<stdio.h>
+
+int main(){
+int a = 0, b = 0, c = 0, d = -1, e, f;
+char cc[20];
+char ss[100];
+char i = 1;
+i = getchar();
+while (i != '\n'){
+cc[a] = i;
+++a;
+i = getchar();
+}
+scanf("%c", &i);
+while (i != '\n'){
+++d;
+if (c == 0){
+for (b = 0; b < a; b++){
+if (i == cc[b]){
+c = 1;
+}
+}
+if (c == 1){
+ss[d] = '\n';
+}
+
+}
+else{
+c = 0;
+for (b = 0; b < a; b++){
+if (i == cc[b]){
+c++;
+}
+}
+ss[d] = 'э';
+}
+if (c == 0){ ss[d] = i; }
+i = getchar();
+}
+for (b = 0; b <= d; b++){
+if (ss[b] != 'э')
+printf("%c", ss[b]);
+}
+}
