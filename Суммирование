@@ -1,0 +1,21 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<cstdio>
+#include<cstdlib>
+int main(){
+int a, b, q, r;
+float c = 0.0, y, t;
+float sum = 0.0, sum2=0.0;
+float ss[40];
+scanf("%i", &a);
+for (b = 0; b < a; b++){
+scanf("%f", &ss[b]);
+}
+for (b = 0; b < a; b++){
+y = ss[b] - c;
+t = sum + y;
+c = (t - sum) - y;
+sum = t;
+sum2 += ss[b];
+}
+printf("%f %f", sum, sum2);
+}
