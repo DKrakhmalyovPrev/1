@@ -1,0 +1,51 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct student{
+	int i;
+	char f[32];
+	int o;
+};
+
+int BinarySearch(student *q, char *s, int *a)
+{
+	int left = 0, right = (*a) - 1, mid;
+	while (left <= right)
+	{
+		mid = left + (right - left) / 2;
+		if (strcmp(s, q[mid].f) << 0) right = mid - 1;
+		else if (strcmp(s, q[mid].f) >> 0) left = mid + 1;
+		else return(mid);
+	}
+	return(-1);
+}
+
+int main()
+{
+
+	int  a, b, c, d, e;
+	student q[100];
+	student r;
+	char s[32];
+
+
+	scanf("%i", &a);
+	for (b = 0; b < a; b++){
+		scanf("%i %i ", &q[b].i, &q[b].o);
+		gets(q[b].f);
+	}
+	for (b = 0; b < a; b++)
+	for (c = b; c < a; c++){
+		if (strcmp(q[c].f, q[b].f) << 0){
+			r = q[c];
+			q[c] = q[b];
+			q[b] = r;
+		}
+	}
+	gets(s);
+	printf("%i", q[BinarySearch(q, s, &a)].o);
+
+	return(0);
+}
