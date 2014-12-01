@@ -2,50 +2,56 @@
 #include<iostream>
 #include<cstdio>
 #include<cstdlib>
+#include<time.h>
 int main(){
-	int a, b, c, d, e, f,r;
+	int  b, c, d, e, f, r;
 	int l[11];
-	scanf("%i", &a);
-	int *q = (int*)malloc((a) * sizeof(int));
+	long a = 1000000;
+	clock_t start = clock();
+	int *q = (int*)malloc((a)* sizeof(int));
 	int *s = (int*)malloc((a)* sizeof(int));
+	srand((unsigned int)time(NULL));
+	for (b = 0; b < a; b++)
+		q[b] = rand() % 30000;
 	c = 1;
 	d = 10;
-	for (b = 0; b < a; b++){
-		scanf("%i", &q[b]);
+	for (b = 0; b<a;b++)
 		if (q[b]>10 * d){
 			c++;
 			d *= 10;
 		};
-	}
+	
 	for (b = 0; b < 11; b++){
 		l[b] = 0;
 	}
 	d = 10;
 	for (b = 0; b < c; b++){
 		for (f = 0; f < a; f++){
-			e = (q[f] % d) / (d/10);
-			l[e+1]++;
+			e = (q[f] % d) / (d / 10);
+			l[e + 1]++;
 		}
 		for (f = 1; f < 11; f++){
 			l[f] += l[f - 1];
 		}
 		for (f = 0; f < a; f++){
-			e = (q[f] % d) / (d / 10); 
+			e = (q[f] % d) / (d / 10);
 			r = l[e];
 			s[r] = q[f];
 			l[e]++;
 		}
 		for (f = 0; f < 11; f++){
-			l[f] =0;
+			l[f] = 0;
 		}
 		for (f = 0; f < a; f++){
 			q[f] = s[f];
 			s[f] = 0;
 		}
-		d *= 10;		
+		d *= 10;
 	}
-	for (b = 0; b < a; b++){
+	start = clock() - start;
+	/*for (b = 0; b < a; b++){
 		printf("%i ", q[b]);
-	};
+	};*/
+	printf("\n %f \n", (double)start / CLOCKS_PER_SEC);
 	return(0);
-	}
+}
