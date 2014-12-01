@@ -15,8 +15,8 @@ int BinarySearch(student *q, char *s, int *a)
 	while (left <= right)
 	{
 		mid = left + (right - left) / 2;
-		if (strcmp(s, q[mid].f) << 0) right = mid - 1;
-		else if (strcmp(s, q[mid].f) >> 0) left = mid + 1;
+		if (strcmp(s, q[mid].f) < 0) right = mid - 1;
+		else if (strcmp(s, q[mid].f) > 0) left = mid + 1;
 		else return(mid);
 	}
 	return(-1);
@@ -45,7 +45,11 @@ int main()
 		}
 	}
 	gets(s);
-	printf("%i", q[BinarySearch(q, s, &a)].o);
+	e = BinarySearch(q, s, &a);
+	 if (e == -1)
+		printf("Error");
+	else
+	printf("%i", q[e].o);
 
 	return(0);
 }
