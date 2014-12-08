@@ -1,0 +1,42 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<time.h>
+
+struct Athlete{
+        int num;
+	     int weight;
+	    int strength;
+};
+
+int main(){
+	int a, b, c, d, e;
+	Athlete s[100];
+	Athlete q;
+
+	scanf("%i", &a);
+	for (b = 0; b < a; b++){
+		scanf("%i %i", &s[b].weight , &s[b].strength);
+		s[b].num=b;}
+	for (b = a; b>0; b--)
+	for (c = 0; c < b; c++)
+	if (s[c].weight<s[b].weight){
+		q = s[c];
+		s[c] = s[b];
+		s[b] = q;
+	}
+	b = a-1;
+	c = 0;
+	d = 0;
+	while (b >= 0){
+		if (s[b].strength >= c){
+			d++;
+			c += s[b].weight;
+			printf("%i", s[b].num;
+		}
+		b--;
+	};
+	printf("%i", d);
+	return(0);
+}
