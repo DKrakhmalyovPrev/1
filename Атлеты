@@ -33,7 +33,7 @@ int main(){
 		if (s[b].strength >= c){
 			d++;
 			c += s[b].weight;
-			printf("%i", s[b].num);
+			printf("%i ", s[b].num);
 		}
 		b--;
 	};
