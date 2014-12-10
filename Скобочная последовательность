@@ -1,0 +1,42 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+
+void main(){
+	int a, b, c, d, e,i,j;
+	char s=' ' , q;
+	char *ss = (char*)malloc(100 * sizeof(char));
+	i = 0;
+	j = 1;
+	scanf("%c", &s);
+	while ((s != '\n')&&(i>-1)){
+		if ((s == '{') || (s == '(')){
+			ss[i] = s;
+			i++;
+		}
+		if (s == '}')
+		if (ss[i - 1] != '{'){
+			j = 0;
+			break;
+			}
+		else{
+			ss[i - 1] = ' ';
+			i--;
+		}
+		if (s == ')')
+		if (ss[i - 1] != '('){
+			j = 0;
+			break;			
+		}
+		else{
+			ss[i - 1] = ' ';
+			i--;			
+		}
+		scanf("%c", &s);
+	}
+	if (j == 1)
+		printf("YES");
+	else printf("NO");
+
+}
