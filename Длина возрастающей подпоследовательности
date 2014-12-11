@@ -1,0 +1,32 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<time.h>
+
+int main(){
+	int a, b, c, d, e;
+	scanf("%i", &a);
+	int *q = (int*)malloc((a)* sizeof(int));
+	int *s = (int*)malloc((a)* sizeof(int));
+	s[0] = -30000;
+	for (b = 0; b < a; b++)
+		scanf("%i", &q[b]);
+	for (b =1; b < a+1; b++)
+		s[b] = 30000;
+	e = 0;
+	d = 1;
+	for (b = 0; b < a; b++){
+		while (q[b]>s[e])
+			e++;
+		if (q[b] < s[e])
+			s[e ] = q[b];
+		if (e>d) d = e;
+		e = 0;
+	}
+	/*for (b = 1; b <= d; b++)
+		printf("%i ", s[b]);*/
+	printf("%i", d);
+	return(0);
+}
+	
