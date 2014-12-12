@@ -1,0 +1,34 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<time.h>
+
+int main(){
+	int a, b, c, d, e;
+	scanf("%i", &a);
+	int *ss = (int*)malloc(a * sizeof(int));
+	int *sf = (int*)malloc(a * sizeof(int));
+	for (b = 0; b < a; b++){
+		scanf("%i", &ss[b]);
+		scanf("%i", &sf[b]);
+	}
+		for (b = 0; b < a - 1; b++)
+		for (c = b + 1; c < a; c++)
+		if (sf[b]>sf[c]){
+			d = sf[b];
+			sf[b] = sf[c];
+			sf[c] = d;
+			d = ss[b];
+			ss[b] = ss[c];
+			ss[c] = d;
+		}
+		c = 0;
+		for (b = 0; b < a; b++){
+			if (ss[b] >= c){
+				printf("%i %i\n", ss[b], sf[b]);
+				c = sf[b];
+			};
+		}
+		return(0);
+	}
