@@ -1,0 +1,60 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<time.h>
+
+int main(){
+	int a, b, c, d, e,x,y;
+	scanf("%i", &a);
+	int *ss = (int*)malloc(a * sizeof(int));
+	int *sf = (int*)malloc(a * sizeof(int));
+	int *ss1 = (int*)malloc(a * sizeof(int));
+	int *sf1 = (int*)malloc(a * sizeof(int));
+	for (b = 0; b < a; b++)
+		scanf("%i %i", &ss[b], &sf[b]);
+	for (b = 0; b < a - 1; b++)
+	for (c = b + 1; c < a; c++)
+	if (ss[b]>ss[c]){
+		d = sf[b];
+		sf[b] = sf[c];
+		sf[c] = d;
+		d = ss[b];
+		ss[b] = ss[c];
+	}
+	c = 0;
+	b = 0;
+	d = 0;
+	e = 0 ;
+	x = 0;
+	y = 0;
+	while ((c<10000) && (b<a)){
+		if (ss[b]>c){
+			ss1[x] = d;
+			sf1[x] = e;
+			c = e;
+			x++;
+		}
+		else{
+			if (sf[b] > e){
+				e = sf[b];
+				d = ss[b];
+			}
+			b++;
+		}
+	}
+	if ((ss[b - 1] <= c)&&(ss1[x-1]!=d)){
+		ss1[x] = d;
+		sf1[x] = e;
+		c = e;
+		x++;
+	}
+		if ((c >= 10000) && (y == 0)){
+		printf("%i\n", x);
+		for (b = 0; b < x; b++)
+			printf("%i %i\n", ss1[b], sf1[b]);
+		}
+		else
+			printf("Ne mogem pokrit'");
+	return(0);
+}
