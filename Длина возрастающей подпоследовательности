@@ -5,36 +5,57 @@
 #include<time.h>
 
 int main(){
-	int a, b, c, d, e,f, max;
+	int a, b, c, d, e, f, max;
+	int aa[255][255];
 	scanf("%i", &a);
 	int *q = (int*)malloc((a)* sizeof(int));
 	int *s = (int*)malloc((a)* sizeof(int));
 	int *r = (int*)malloc((a)* sizeof(int));
-	s[0] = -30000;
-	for (b = 0; b < a; b++)
+	for (b = 1; b < a+1; b++){
 		scanf("%i", &q[b]);
-	for (b =1; b < a+1; b++)
-		s[b] = 30000;
-	e = 0;
-	c = 1;
-	max = 0;
-	for (b = 0; b < a; b++){
-		while (q[b]>s[e])
-			e++;
-		if (q[b] < s[e]){
-			s[e] = q[b];
-			if (e > max){
-				max = e;
-				for (f = 1; f <= e; f++)
-					r[f] = s[f];
-			}
-		}
-		e = 0;
+		s[b] = q[b];
 	}
-	for (b = 1; b <= max; b++)
-			printf("%i ", r[b]);
+	for (b = 1; b < a ; b++)
+	for (c = b + 1; c < a+1; c++)
+	if (q[b]>q[c]){
+		d = q[b];
+		q[b] = q[c];
+		q[c] = d;
+	}
+	for (b = 0; b <= a; b++){
+		aa[0][b] = 0;
+		aa[b][0] = 0;
+	}
+	for (c = 1; c <= a; c++)
+	for (b = 1; b <= a; b++)
+	if (q[c] != s[b])
+	if (aa[c - 1][b] >= aa[c][b - 1])
+		aa[c][b] = aa[c - 1][b]; else
+		aa[c][b] = aa[c][b - 1];
+	else
+		aa[c][b] = aa[c - 1][b - 1] + 1;
+	c = a ;
+	b = a ;
+	e = 1;
+	r[0] = -3;
+	while ((c > 0) && (b > 0)){
+		if (aa[c][b] == aa[c - 1][b])
+			c--;
+		else
+		if (aa[c][b] == aa[c][b - 1])
+			b--;
+		else if (aa[c][b] == aa[c - 1][b - 1] + 1){
+			if (q[c] != r[e - 1]){
+				r[e] = q[c];
+				e++;
+			}
+			c--;
+			b--;
 			
-	printf("\n%i", max);
+		}
+	}
+	for (b = e-1 ; b >= 1; b--)
+		printf("%i ", r[b]);
+	printf("\n%i", e-1);
 	return(0);
 }
-	
