@@ -1,8 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include<iostream>
-#include<cstdio>
 #include<cstdlib>
-#include<time.h>
 
 struct Athlete{
 	int num;
@@ -11,31 +7,61 @@ struct Athlete{
 };
 
 int main(){
-	int a, b, c, d, e;
-	Athlete q;
+	int a, b, c, d, e, f,r;
 	scanf("%i", &a);
-	Athlete *s = (Athlete*)malloc((a)* sizeof(Athlete));
+	int l[11];
+	Athlete *q = (Athlete*)malloc((a)* sizeof(Athlete));
+	Athlete *s= (Athlete*)malloc((a)* sizeof(Athlete));
 	for (b = 0; b < a; b++){
-		scanf("%i %i", &s[b].weight, &s[b].strength);
-		s[b].num = b;
+		scanf("%i %i", &q[b].weight, &q[b].strength);
+		q[b].num = b;
 	}
-	for (b = a; b>0; b--)
-	for (c = 0; c < b; c++)
-	if ((s[c].weight<=s[b].weight)&&(s[c].strength < s[b].strength)){
-		q = s[c];
-		s[c] = s[b];
-		s[b] = q;
+	c = 1;
+	d = 10;
+	for (b = 0; b<a; b++)
+	if (q[b].strength>10 * d){
+		c++;
+		d *= 10;
+	};
+
+	for (b = 0; b < 11; b++){
+		l[b] = 0;
 	}
-	b = a - 1;
+	d = 10;
+	for (b = 0; b < c+1; b++){
+		for (f = 0; f < a; f++){
+			e = (q[f].strength % d) / (d / 10);
+			l[e + 1]++;
+		}
+		for (f = 1; f < 11; f++){
+			l[f] += l[f - 1];
+		}
+		for (f = 0; f < a; f++){
+			e = (q[f].strength % d) / (d / 10);
+			r = l[e];
+			s[r] = q[f];
+			l[e]++;
+		}
+		for (f = 0; f < 11; f++){
+			l[f] = 0;
+		}
+		for (f = 0; f < a; f++){
+			q[f] = s[f];
+			s[f].strength = 0;
+		}
+		d *= 10;
+	}
+	
+	b = 0;
 	c = 0;
 	d = 0;
-	while (b >= 0){
-		if (s[b].strength >= c){
+	while (b < a){
+		if (q[b].strength >= c){
 			d++;
-			c += s[b].weight;
+			c += q[b].weight;
 			/*printf("%i ", s[b].num);*/
 		}
-		b--;
+		b++;
 	};
 	printf("%i", d);
 	return(0);
