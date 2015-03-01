@@ -7,28 +7,12 @@ using namespace std;
 class Sobranie{
 	public:
 		Sobranie(){
-			c='a';
-			i=0;
 			printf("Введите название собрания сочинений\n");
-			Name=(char*)malloc(30*sizeof(char));
-			while(c!='\n'){ 
-				scanf("%c", &c);
-				Name[i]=c;
-				i++;
-			};
-			c='a';
-			i=0;
+			scanf("%s", Name);
 			printf("Введите автора\n");
-			Avtor=(char*)malloc(30*sizeof(char));
-			while(c!='\n'){ 
-				scanf("%c", &c);
-				Avtor[i]=c;
-				i++;
-			};	
+			scanf("%s", Avtor);
 			printf("Введите число томов\n");
 			scanf("%i", &toma);
-			c='a';
-			i=0;
 		};
 		void Addbook(){
 			Books=(Book*)malloc(toma*sizeof(Book));	
@@ -40,8 +24,8 @@ class Sobranie{
 		
 
 int year, toma, i,j,k,l; char c;
-char *Avtor;
-char *Name;
+char Avtor[30];
+char Name[30];
 Book *Books;
 };
 
