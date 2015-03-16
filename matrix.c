@@ -32,5 +32,7 @@ void sum(Matrix odin, Matrix dva)
 int main(){
 	int i,j;
 	Matrix odin;
+	odin[1][1]=10;
+	odin.PrintTable();
 	return(0);
 };
