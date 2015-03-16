@@ -5,9 +5,7 @@ using namespace std;
 
 class Matrix{
 	public:
-		Matrix(){	
-				
-				cin>>wide;
+		Matrix(int wide){	
 				table=(double**)malloc(wide*sizeof(double));
 				for(i=0;i<wide;i++)
 					table[i]=(double*)malloc(wide*sizeof(double));
@@ -17,16 +15,16 @@ class Matrix{
 					
 			};
 
-		Matrix(Matrix *a){
-							cin>>wide;
+		Matrix(Matrix a){
+						wide=a.wide;
 							table=(double**)malloc(wide*sizeof(double));
 							for(i=0;i<wide;i++)
 									table[i]=(double*)malloc(wide*sizeof(double));
-							table=a->table;
+							table=a.table;
 		};
 
-		Matrix(int i){
-					cin>>wide;
+		Matrix(int wide, int i){
+						 
 							table=(double**)malloc(wide*sizeof(double));
 							for(i=0;i<wide;i++)
 									table[i]=(double*)malloc(wide*sizeof(double));
@@ -48,7 +46,7 @@ class Matrix{
 		
 
 		Matrix Trans(){	
-				Matrix a(1);
+				Matrix a(wide,1);
 				/*transtable=(double**)malloc(wide*sizeof(double));
 				for(i=0;i<wide;i++)
 					transtable[i]=(double*)malloc(wide*sizeof(double));	*/	
@@ -92,7 +90,7 @@ class Matrix{
 			
 		Matrix Reversed(){
 			int i,j,k,p; double det;
-			Matrix edinst(1);
+			Matrix edinst(wide,1);
 			//edinst=(double**)malloc(wide*sizeof(double));
 				//for(i=0;i<wide;i++)
 					//edinst[i]=(double*)malloc(wide*sizeof(double));	
@@ -176,7 +174,7 @@ class Matrix{
 			
 
 		Matrix operator*(Matrix & other){
-				Matrix mult;
+				Matrix mult(wide,1);
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++){
 						b=0;
@@ -189,7 +187,7 @@ class Matrix{
 		
 
 		Matrix operator+(Matrix & other){
-				Matrix sum(1);
+				Matrix sum(wide,1);
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++)
 						sum.table[i][j]=table[i][j]+other.table[i][j];
