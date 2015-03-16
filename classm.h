@@ -7,40 +7,60 @@ class Matrix{
 	public:
 		Matrix(){	
 				
-				scanf("%d", &wide);
+				cin>>wide;
 				table=(double**)malloc(wide*sizeof(double));
 				for(i=0;i<wide;i++)
 					table[i]=(double*)malloc(wide*sizeof(double));
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++)
-						scanf("%lf", &table[i][j]);
+						cin>>table[i][j];
 					
 			};
+
+		Matrix(Matrix *a){
+							cin>>wide;
+							table=(double**)malloc(wide*sizeof(double));
+							for(i=0;i<wide;i++)
+									table[i]=(double*)malloc(wide*sizeof(double));
+							table=a->table;
+		};
+
+		Matrix(int i){
+					cin>>wide;
+							table=(double**)malloc(wide*sizeof(double));
+							for(i=0;i<wide;i++)
+									table[i]=(double*)malloc(wide*sizeof(double));
+		};
+
 		void PrintTable(){
 				for (i=0;i<wide;i++){
 					for(j=0;j<wide;j++)
-						printf("%lf ", table[i][j]);
-					printf("\n");};
+						cout<<table[i][j];
+					cout<<"\n";}
 				};
-		void Trace(){	
+		double Trace(){	
 				tr=0;
 				for (i=0;i<wide;i++)
 					tr+=table[i][i];
-					printf("Trace is %lf", tr);
+					//printf("Trace is %lf", tr);
+					return(tr);
 				};
 		
 
-		void Trans(){	
-				transtable=(double**)malloc(wide*sizeof(double));
+		Matrix Trans(){	
+				Matrix a(1);
+				/*transtable=(double**)malloc(wide*sizeof(double));
 				for(i=0;i<wide;i++)
-					transtable[i]=(double*)malloc(wide*sizeof(double));		
+					transtable[i]=(double*)malloc(wide*sizeof(double));	*/	
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++)
-						transtable[i][j]=table[j][i];
-				for (i=0;i<wide;i++){
+						a.table[i][j]=table[j][i];
+				/*for (i=0;i<wide;i++){
 					for(j=0;j<wide;j++)
 						printf("%lf ", transtable[i][i]);
 					printf("\n");};
+					*/
+				return(a);
 				};
 		
 		void Determ(){
@@ -66,18 +86,19 @@ class Matrix{
 				};
 			for(i=0;i<wide;i++)
 				det*=table[i][i];
-			printf("%.2lf", det);	
+			cout<<det;	
 			};
 			
 			
-		void Reversed(){
+		Matrix Reversed(){
 			int i,j,k,p; double det;
-			edinst=(double**)malloc(wide*sizeof(double));
-				for(i=0;i<wide;i++)
-					edinst[i]=(double*)malloc(wide*sizeof(double));	
+			Matrix edinst(1);
+			//edinst=(double**)malloc(wide*sizeof(double));
+				//for(i=0;i<wide;i++)
+					//edinst[i]=(double*)malloc(wide*sizeof(double));	
 			for(i=0;i<wide;i++)
 				for(j=0;j<wide;j++)
-					if(i==j){edinst[i][j]=1;} else {edinst[i][j]=0;};			
+					if(i==j){edinst.table[i][j]=1;} else {edinst.table[i][j]=0;};			
 			for(i=0;i<wide;i++)
 				for(j=i+1;j<wide;j++){
 					if(table[i][i]==0){
@@ -87,9 +108,9 @@ class Matrix{
 							co=table[p][i];
 							table[p][k]=table[i][k];
 							table[i][k]=co;
-							co=edinst[p][i];
-							edinst[p][k]=edinst[i][k];
-							edinst[i][k]=co;
+							co=edinst.table[p][i];
+							edinst.table[p][k]=edinst.table[i][k];
+							edinst.table[i][k]=co;
 							};
 						det*=-1;
 					};	
@@ -97,7 +118,7 @@ class Matrix{
 						b=table[j][i]/table[i][i];
 						for(k=i;k<wide;k++){
 							table[j][k]-=b*table[i][k];
-							edinst[j][k]-=b*edinst[i][k];
+							edinst.table[j][k]-=b*edinst.table[i][k];
 					};};
 				};
 			for(i=0;i<wide;i++)
@@ -114,10 +135,10 @@ class Matrix{
 					reversedin[i]=(double*)malloc(wide*sizeof(double));		
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++)
-						reversedin[i][j]=edinst[j][i];
+						reversedin[i][j]=edinst.table[j][i];
 			for(i=0;i<wide;i++)
 				for(j=i+1;j<wide;j++)
-					edinst[i][j]=reversedin[i][j];
+					edinst.table[i][j]=reversedin[i][j];
 						
 			for(i=0;i<wide;i++)
 				for(j=i+1;j<wide;j++){
@@ -128,59 +149,57 @@ class Matrix{
 							co=revers[p][i];
 							revers[p][k]=revers[i][k];
 							revers[i][k]=co;
-							co=edinst[p][i];
-							edinst[p][k]=edinst[i][k];
-							edinst[i][k]=co;
+							co=edinst.table[p][i];
+							edinst.table[p][k]=edinst.table[i][k];
+							edinst.table[i][k]=co;
 							};
 					};	
 					if(revers[i][i]!=0){
 						b=revers[j][i]/revers[i][i];
 						for(k=i;k<wide;k++){
 							revers[j][k]-=b*revers[i][k];
-							edinst[j][k]-=b*edinst[i][k];
+							edinst.table[j][k]-=b*edinst.table[i][k];
 						};
 					};
 				};
 			for(i=0;i<wide;i++)
 				if(revers[i][i]!=0)
-					edinst[i][i]*=1/revers[i][i];
+					edinst.table[i][i]*=1/revers[i][i];
 			
-			if(det==0){printf("Обратной матрицы не существует");} else
-			for(i=0;i<wide;i++){
-				for(j=0;j<wide;j++)
-					printf("%.2lf ", edinst[i][j]);
-				printf("\n");};
+			if(det==0){printf("No reverced matrix");} else
+			//for(i=0;i<wide;i++){
+				//for(j=0;j<wide;j++)
+					//printf("%.2lf ", edinst.table[i][j]);
+				//printf("\n");};
+			return(edinst);
 		};
 			
 
-		double** operator*(Matrix & other){
-				mult=(double**)malloc(wide*sizeof(double));
-				for(i=0;i<wide;i++)
-					mult[i]=(double*)malloc(wide*sizeof(double));
+		Matrix operator*(Matrix & other){
+				Matrix mult;
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++){
 						b=0;
 						for(a=0;a<wide;a++)
 						b+=table[i][a]*other.table[a][j];
-						mult[i][j]=b;
+						mult.table[i][j]=b;
 					};
 				return(mult);
 				};
 		
 
-		double **operator+(Matrix & other){
-				sum=(double**)malloc(wide*sizeof(double));
-				for(i=0;i<wide;i++)
-					sum[i]=(double*)malloc(wide*sizeof(double));
+		Matrix operator+(Matrix & other){
+				Matrix sum(1);
 				for (i=0;i<wide;i++)
 					for(j=0;j<wide;j++)
-						sum[i][j]=table[i][j]+other.table[i][j];
+						sum.table[i][j]=table[i][j]+other.table[i][j];
 				return(sum);
 				};
 				
 		double *operator[](int i){
 				return(table[i]);
 		};
+	
 		
 	int wide, i,j,a,c,k,p; double co,b,tr;
 	double **table;
@@ -191,4 +210,3 @@ class Matrix{
 	double **edinst;
 	double **reversedin;
 };
-
