@@ -177,7 +177,10 @@ class Matrix{
 						sum[i][j]=table[i][j]+other.table[i][j];
 				return(sum);
 				};
-	
+				
+		double *operator[](int i){
+				return(table[i]);
+		};
 		
 	int wide, i,j,a,c,k,p; double co,b,tr;
 	double **table;
