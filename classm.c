@@ -20,36 +20,36 @@ class Matrix
 		element **table;
 		
 		Matrix(int s): wide(s)
-			{
+		{
 			element **table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
 			for (i=0;i<wide;i++)
 				for(j=0;j<wide;j++)
 					cin>>table[i][j];
-			};
+		};
 
-		Matrix(const Matrix<element>& a):wide(a.wide), table(a.table)
-			{
-			//element **table=new element*[wide];
-			//for(i=0;i<wide;i++)
-			//	table[i]=new element[wide];
-			//for(i=0;i<wide;i++)
-			//	for(j=0;j<wide;j++)
-			//		table[i][j]=a.table[i][j];
-			};
-			
-		Matrix(int s, int i): wide(s)
-			{
+		Matrix(const Matrix<element>& a): wide(a.wide)
+		{
 			element **table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
-			};
+			for(i=0;i<wide;i++)
+				for(j=0;j<wide;j++)
+					table[i][j]=a.table[i][j];
+		};
+
+		Matrix(int s, int i): wide(s)
+		{
+			element **table=new element*[wide];
+			for(i=0;i<wide;i++)
+				table[i]=new element[wide];
+		};
 
 		int Rasmer()
-			{ 
+		{ 
 			return(wide);
-			};
+		};
 		
 		void PrintTable()
 		{		
@@ -60,7 +60,7 @@ class Matrix
 			cout<<"\n";
 			}
 		};
-
+		
 		double Trace()
 		{
 			tr=0;
@@ -77,12 +77,15 @@ class Matrix
 					a.table[i][j]=table[j][i];
 			return(a);
 		};
-		
+
 		double Determ()
 		{
 			double det=1;
 			int i,j,k,p;
-			Matrix table1(Matrix);
+			Matrix<double> table1(*this);
+			for(i=0;i<wide;i++)
+				for(j=i+1;j<wide;j++)
+					table1.table[i][j]=table[i][j];
 			for(i=0;i<wide;i++)
 				for(j=i+1;j<wide;j++)
 				{
@@ -109,7 +112,6 @@ class Matrix
 				det*=table1.table[i][i];
 			return(det);	
 			};
-			
 			
 		Matrix Reversed()
 		{
@@ -220,7 +222,6 @@ class Matrix
 				return(edinst);
 		};
 			
-
 		Matrix operator*(Matrix & other)
 		{
 			Matrix mult(wide,1);
@@ -234,7 +235,7 @@ class Matrix
 				};
 			return(mult);
 		};
-		
+
 		Matrix operator+(Matrix & other)
 		{
 			Matrix sum(wide,1);
@@ -248,7 +249,6 @@ class Matrix
 		{
 			return(table[i]);
 		};
-
 
 		friend ostream& operator<<(ostream &out,Matrix &x)
 		{
@@ -267,7 +267,7 @@ class Matrix
 
 };
 
-void PrintMatrix(Matrix<double>& a)
+/*void PrintMatrix(Matrix<double>& a)
 {
    for (int i = 0; i < a.wide ; ++ i)
    {
@@ -276,11 +276,11 @@ void PrintMatrix(Matrix<double>& a)
       puts ("");
    }
 }
-
+*/
 int main(){
 	int i,j; 
 	Matrix<double> odin(2);
-	PrintMatrix(odin);
+	cout<<odin.Determ();
 	//Matrix<double> odint(odin);
 	//cout << odin;
 	//odin.PrintTable();
