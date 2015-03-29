@@ -111,7 +111,7 @@ class Matrix
 			for(i=0;i<wide;i++)
 				det*=table1.table[i][i];
 			return(det);	
-			};
+		};
 			
 		Matrix Reversed()
 		{
