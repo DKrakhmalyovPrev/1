@@ -2,7 +2,10 @@
 
 #include <stdio.h>
 
-#include <stdlib.h>
+#include <cstdlib>
+
+#include <math.h>
+
 
 using namespace std;
 
@@ -19,14 +22,16 @@ class Matrix
 		int wide;
 		element **table;
 		
-		Matrix(int s): wide(s)
+		Matrix(int s)
 		{
+			wide=s;
 			table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
 			for (i=0;i<wide;i++)
 				for(j=0;j<wide;j++)
-					cin>>table[i][j];
+					table[i][j]=rand() % 300 - 150;
+					//cin>>table[i][j];
 		};
 
 		Matrix(const Matrix<element>& a)
@@ -57,7 +62,8 @@ class Matrix
 			for(i=0;i<wide;i++)
 			{
 				for(j=0;j<wide;j++)
-					cout<<table[i][j]<<" ";
+					printf("%.2lf ", table[i][j]);
+					//cout<<table[i][j]<<" ";
 			cout<<"\n";
 			}
 		};
@@ -280,11 +286,11 @@ class Matrix
 */
 int main(){
 	int i,j; 
-	Matrix<double> odin(2);
-	for(i=0;i<odin.wide;i++)
-		for(j=0;j<odin.wide;i++)
-			printf("%lf", odin.table[i][j]); 
-	//cout<<odin.Determ();
+	Matrix<double> odin(50);
+	odin.PrintTable();
+	printf("\n Обратная матрица \n");
+	Matrix<double> odint(odin.Reversed());
+	odint.PrintTable();
 	//Matrix<double> odint(odin);
 	//cout << odin;
 	//odin.PrintTable();
