@@ -21,7 +21,7 @@ class Matrix
 		
 		Matrix(int s): wide(s)
 		{
-			element **table=new element*[wide];
+			table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
 			for (i=0;i<wide;i++)
@@ -29,9 +29,10 @@ class Matrix
 					cin>>table[i][j];
 		};
 
-		Matrix(const Matrix<element>& a): wide(a.wide)
+		Matrix(const Matrix<element>& a)
 		{
-			element **table=new element*[wide];
+			wide=a.wide;
+			table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
 			for(i=0;i<wide;i++)
@@ -41,7 +42,7 @@ class Matrix
 
 		Matrix(int s, int i): wide(s)
 		{
-			element **table=new element*[wide];
+			table=new element*[wide];
 			for(i=0;i<wide;i++)
 				table[i]=new element[wide];
 		};
@@ -82,7 +83,7 @@ class Matrix
 		{
 			double det=1;
 			int i,j,k,p;
-			Matrix<double> table1(*this);
+			Matrix<element> table1(*this);
 			for(i=0;i<wide;i++)
 				for(j=i+1;j<wide;j++)
 					table1.table[i][j]=table[i][j];
@@ -116,8 +117,8 @@ class Matrix
 		Matrix Reversed()
 		{
 			int i,j,k,p; double det;
-			Matrix edinst(wide,1);
-			Matrix table1(Matrix);
+			Matrix<element> edinst(wide,1);
+			Matrix<element> table1(*this);
 			for(i=0;i<wide;i++)
 				for(j=0;j<wide;j++)
 					if(i==j)
@@ -280,7 +281,10 @@ class Matrix
 int main(){
 	int i,j; 
 	Matrix<double> odin(2);
-	cout<<odin.Determ();
+	for(i=0;i<odin.wide;i++)
+		for(j=0;j<odin.wide;i++)
+			printf("%lf", odin.table[i][j]); 
+	//cout<<odin.Determ();
 	//Matrix<double> odint(odin);
 	//cout << odin;
 	//odin.PrintTable();
