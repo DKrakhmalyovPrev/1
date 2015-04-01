@@ -6,29 +6,37 @@ using namespace std;
 
 class Shape
 {
-	int i;
+	private:
+		int i;
 };
 
 class Point
 {
+	friend class Segment;
+	friend class Vector;
+	private:		
+		double x1,y1;
 	public:
 		Point()
 		{
-			printf("Введите координаты точки\n");
+			cout<<"Введите координаты точки\n";
 			scanf("%lf%lf", &x1,&y1);
 		}
 		
 		Point(double j,double k): x1(j), y1(k){};
 	
-	double x1,y1;
 };
 
 class Segment
 {
+	friend class Point;
+	friend class Vector;
+	private:		
+		double x1,x2,y1,y2, A, B, C;
 	public:
 		Segment()
 		{
-			printf("Введите точки отрезка\n");
+			cout<<"Введите точки отрезка\n";
 			scanf("%lf%lf%lf%lf", &x1,&y1,&x2,&y2);
 		}
 		
@@ -42,6 +50,7 @@ class Segment
 		B=-1;
 		C=-b;
 	}
+	
 	int SegmentCut(Segment r,Segment s)
 	{
 		double x,y;
@@ -64,19 +73,25 @@ class Segment
 	void LanePoint(Segment seg, Point po)
 	{
 		seg.Lane();
-		if(seg.A*po.x1+seg.B*po.y1>seg.C){printf("Ниже");};
-		if(seg.A*po.x1+seg.B*po.y1<seg.C){printf("Выше");}; 
-		if((seg.A*po.x1+seg.B*po.y1==seg.C)){printf("На прямой");};
+		if(seg.A*po.x1+seg.B*po.y1>seg.C){cout<<"Ниже";};
+		if(seg.A*po.x1+seg.B*po.y1<seg.C){cout<<"Выше";}; 
+		if((seg.A*po.x1+seg.B*po.y1==seg.C)){cout<<"На прямой";};
 	}
-	double x1,x2,y1,y2, A, B, C;
+
+	
 };
 
 class Vector
 {
+	friend class Point;
+	friend class Segment;
+	private:		
+		double  xst, yst, xend, yend; 
 	public:
+		
 		Vector()
 		{
-			printf("Введите координаты начала и конца");
+			cout<<"Введите координаты начала и конца";
 			scanf("%lf%lf%lf%lf", &xst, &yst, &xend, &yend);
 		}
 
@@ -97,5 +112,10 @@ class Vector
 			b.y2=a.yend;
 		}
 
-double  xst, yst, xend, yend; 
 };
+
+int main(){
+	Segment a,b; int i;
+	i = a.SegmentCut(a,b);
+	return(0);
+}
