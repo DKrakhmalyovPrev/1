@@ -6,6 +6,8 @@
 
 #include <math.h>
 
+#include<ctime>
+
 
 using namespace std;
 
@@ -14,6 +16,7 @@ class Matrix
 {	
 	
 	private:
+		double det;
 		int wide;
 		element **table;
 			
@@ -21,6 +24,7 @@ class Matrix
 		
 		Matrix(int s)
 		{
+			srand( time(0) );
 			wide=s;
 			table=new element*[wide];
 			for(int i=0;i<wide;i++)
@@ -28,7 +32,7 @@ class Matrix
 			for (int i=0;i<wide;i++)
 				for(int j=0;j<wide;j++)
 					//cin>>table[i][j];
-					table[i][j]=rand() % 300 - 150;
+					table[i][j]=rand() % 30 - 15;
 		};
 
 		Matrix(const Matrix<element>& a)
@@ -82,9 +86,8 @@ class Matrix
 			return(a);
 		};
 		
-		double ToDiag(const Matrix<element>& a)
+		Matrix ToDiag(const Matrix<element>& a)
 		{	
-			double det=1;
 			int i,j,k,p;
 			element co,b;
 			
@@ -117,13 +120,16 @@ class Matrix
 					}
 				}
 	
-			return(det);
+			return(a);
 		}
 
 		double Determ()
-		{
+		{	
+			det=1;
+
 			Matrix<element> table1(*this);
-			double det=table1.ToDiag(*this);
+			Matrix<element> just(*this);
+			table1=table1.ToDiag(just);
 			
 			for(int i=0;i<wide;i++)
 				det*=table1.table[i][i];
@@ -132,7 +138,7 @@ class Matrix
 			
 		Matrix Reversed()
 		{
-			int i,j,k,p; double det; element co,b;
+			int i,j,k,p; double s; element co,b;
 			Matrix<element> edinst(wide,1);
 			Matrix<element> table1(*this);
 			for(i=0;i<wide;i++)
@@ -145,19 +151,24 @@ class Matrix
 					{
 						edinst.table[i][j]=0;
 					};
-
-			table1.ToDiag(edinst);
+			s=Determ();
+			edinst=table1.ToDiag(edinst);
 
 			edinst=edinst.Trans();
 			table1=table1.Trans();
 			
-			table1.ToDiag(edinst);
+			edinst=table1.ToDiag(edinst);
 			
 			for(i=0;i<wide;i++)
 				if(table1.table[i][i]!=0)
 					edinst.table[i][i]*=1/table1.table[i][i];
 			
+			edinst=edinst.Trans();	
+			if(s==0)
+				cout<<"Обратной не существует"; 
+			else		
 			return(edinst);
+			
 		};
 		
 		Matrix operator*(Matrix & other)
@@ -202,9 +213,10 @@ int main(){
 	Matrix<double> odin(3);
 	odin.PrintTable();
 	printf("%.2lf" , odin.Determ());
+	
 	printf("\n Обратная матрица \n");
-	//Matrix<double> odint(odin.Reversed());
-	//odint.PrintTable();	
+	Matrix<double> odint(odin.Reversed());
+	odint.PrintTable();	
 	
 	return(0);
 };
