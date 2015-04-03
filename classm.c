@@ -31,8 +31,7 @@ class Matrix
 				table[i]=new element[wide];
 			for (int i=0;i<wide;i++)
 				for(int j=0;j<wide;j++)
-					//cin>>table[i][j];
-					table[i][j]=rand() % 30 - 15;
+					cin>>table[i][j];
 		};
 
 		Matrix(const Matrix<element>& a)
@@ -46,24 +45,27 @@ class Matrix
 					table[i][j]=a.table[i][j];
 		};
 
-		Matrix(int s, int i): wide(s)
+		Matrix(int s, int q): wide(s)
 		{
 			table=new element*[wide];
 			for(int i=0;i<wide;i++)
 				table[i]=new element[wide];
+			for (int i=0;i<wide;i++)
+				for(int j=0;j<wide;j++)
+					table[i][j]=rand() % q;
 		};
 
-		int Rasmer()
+		const int Size()
 		{ 
 			return(wide);
 		};
 		
-		void PrintTable()
+		const void PrintTable()
 		{		
 			for(int i=0;i<wide;i++)
 			{
 				for(int j=0;j<wide;j++)
-					printf("%.2lf |", table[i][j]);
+					cout<<.2table[i][j]<<"|";;
 					
 				cout<<"\n";			
 			}
@@ -88,17 +90,16 @@ class Matrix
 		
 		Matrix ToDiag(const Matrix<element>& a)
 		{	
-			int i,j,k,p;
-			element co,b;
+			element co;
 			
-			for(i=0;i<wide;i++)
-				for(j=i+1;j<wide;j++)
+			for(int i=0;i<wide;i++)
+				for(int j=i+1;j<wide;j++)
 				{
 					if(table[i][i]==0)
 					{
-						p=i;
+						int p=i;
 						while((table[p][i]==0)&&(p+1<wide)){p++;};
-						for(k=0;k<wide;k++)
+						for(int k=0;k<wide;k++)
 						{
 							co=table[p][i];
 							table[p][k]=table[i][k];
@@ -111,8 +112,8 @@ class Matrix
 					}	
 					if(table[i][i]!=0)
 					{
-						b=table[j][i]/table[i][i];
-						for(k=i;k<wide;k++)
+						element b=table[j][i]/table[i][i];
+						for(int k=i;k<wide;k++)
 						{	
 							a.table[j][k]-=b*a.table[i][k];
 							table[j][k]-=b*table[i][k];
@@ -123,7 +124,7 @@ class Matrix
 			return(a);
 		}
 
-		double Determ()
+		constdouble Determ()
 		{	
 			det=1;
 
@@ -136,13 +137,13 @@ class Matrix
 			return(det);	
 		};
 			
-		Matrix Reversed()
+		const Matrix Reversed()
 		{
-			int i,j,k,p; double s; element co,b;
+			double s; element co,b;
 			Matrix<element> edinst(wide,1);
 			Matrix<element> table1(*this);
-			for(i=0;i<wide;i++)
-				for(j=0;j<wide;j++)
+			for(int i=0;i<wide;i++)
+				for(int j=0;j<wide;j++)
 					if(i==j)
 					{
 						edinst.table[i][j]=1;
@@ -159,7 +160,7 @@ class Matrix
 			
 			edinst=table1.ToDiag(edinst);
 			
-			for(i=0;i<wide;i++)
+			for(int i=0;i<wide;i++)
 				if(table1.table[i][i]!=0)
 					edinst.table[i][i]*=1/table1.table[i][i];
 			
@@ -171,7 +172,7 @@ class Matrix
 			
 		};
 		
-		Matrix operator*(Matrix & other)
+		const Matrix operator*(Matrix & other)
 		{
 			element b;
 			Matrix mult(wide,1);
@@ -186,7 +187,7 @@ class Matrix
 			return(mult);
 		};
 
-		Matrix operator+(Matrix & other)
+		const Matrix operator+(Matrix & other)
 		{
 			Matrix sum(wide,1);
 			for (int i=0;i<wide;i++)
@@ -195,7 +196,7 @@ class Matrix
 			return(sum);
 		};
 
-		double *operator[](int i)
+		element *operator[](int i)
 		{
 			return(table[i]);
 		};
