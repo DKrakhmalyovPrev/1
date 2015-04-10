@@ -17,207 +17,298 @@ class Matrix
 	
 	private:
 		double det;
-		int wide;
+		int wide,high;
 		element **table;
 			
 	public:
 		
-		Matrix(int s)
-		{
-			srand( time(0) );
-			wide=s;
-			table=new element*[wide];
-			for(int i=0;i<wide;i++)
-				table[i]=new element[wide];
-			for (int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-					cin>>table[i][j];
-		};
+		Matrix(){};
 
 		Matrix(const Matrix<element>& a)
 		{
 			wide=a.wide;
+			high=a.high;
 			table=new element*[wide];
-			for(int i=0;i<wide;i++)
+			for(int i=0;i<high;i++)
 				table[i]=new element[wide];
 			for(int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
+				for(int j=0;j<high;j++)
 					table[i][j]=a.table[i][j];
 		};
 
-		Matrix(int s, int q): wide(s)
+		Matrix(int s, int q): wide(s), high(q)
 		{
 			table=new element*[wide];
-			for(int i=0;i<wide;i++)
+			for(int i=0;i<high;i++)
 				table[i]=new element[wide];
-			for (int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-					table[i][j]=rand() % q;
+			for(int i=0;i<wide;i++)
+					for(int j=0;j<high;j++)
+						if(i==j)
+						{table[i][j]=1;} 
+						else 
+						{table[i][j]=0;};
 		};
 
-		const int Size()
+		~Matrix()
+		{
+			for(int i = 1; i < high; i++)
+  				delete[] table[i];
+			delete[] table;	
+		}
+
+		const int Wide()
 		{ 
 			return(wide);
 		};
 		
+		const int High()
+		{
+			return(high);
+		}
+	
 		const void PrintTable()
 		{		
 			for(int i=0;i<wide;i++)
 			{
-				for(int j=0;j<wide;j++)
-					cout<<.2table[i][j]<<"|";;
+				for(int j=0;j<high;j++)
+					cout<<table[i][j]<<"|";;
 					
 				cout<<"\n";			
 			}
 		};
 		
+		const void ScanMatrix()
+		{
+			for (int i=0;i<wide;i++)
+				for(int j=0;j<high;j++)
+					cin>>table[i][j];	
+		}
+	
 		double Trace()
 		{
-			element tr=0;
-			for (int i=0;i<wide;i++)
-				tr+=table[i][i];
-			return(tr);
+			if(wide==high)
+			{
+				element tr=0;
+				for (int i=0;i<wide;i++)
+					tr+=table[i][i];
+				return(tr);
+			}
+			else
+				cout<<"error trace";
+				return(0);
 		};
 
 		Matrix Trans()
 		{
-			Matrix a(wide,1);
-			for (int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-					a.table[i][j]=table[j][i];
-			return(a);
+			if(high==wide)
+			{
+				Matrix a(high,wide);
+				for (int i=0;i<wide;i++)
+					for(int j=0;j<high;j++)
+						a.table[i][j]=table[j][i];
+				return(a);
+			}
+			else
+				cout<<"error trans";
+				return(*this);
 		};
-		
-		Matrix ToDiag(const Matrix<element>& a)
+	
+
+		void ToDiagUp()
+		{	
+			element co;
+			if(high==wide)
+				for(int i=0;i<wide-1;i++)
+					{
+						if(table[i][i]==0)
+						{
+							int p=i;
+							while((table[p][i]==0)&&(p<wide)){p++;};
+							for(int k=0;k<wide;k++)
+							{
+								co=table[p][k];
+								table[p][k]=table[i][k];
+								table[i][k]=co;
+							};
+							det*=-1;
+						}	
+						if(table[i][i]!=0)
+							for(int j=i+1;j<wide;j++)
+							{
+								element b=table[j][i]/table[i][i];
+								for(int k=i;k<wide;k++)
+								{	
+									table[j][k]-=b*table[i][k];
+								}
+							}
+					}
+		}
+
+		Matrix ToDiagUpWith(const Matrix<element>& a)
 		{	
 			element co;
 			
-			for(int i=0;i<wide;i++)
-				for(int j=i+1;j<wide;j++)
+			for(int i=0;i<wide-1;i++)
 				{
 					if(table[i][i]==0)
 					{
 						int p=i;
-						while((table[p][i]==0)&&(p+1<wide)){p++;};
+						while((table[p][i]==0)&&(p<wide)){p++;};
 						for(int k=0;k<wide;k++)
 						{
-							co=table[p][i];
+							co=table[p][k];
 							table[p][k]=table[i][k];
 							table[i][k]=co;
-							co=a.table[p][i];
+							co=a.table[p][k];
 							a.table[p][k]=a.table[i][k];
 							a.table[i][k]=co;
 						};
 						det*=-1;
 					}	
 					if(table[i][i]!=0)
-					{
-						element b=table[j][i]/table[i][i];
-						for(int k=i;k<wide;k++)
-						{	
-							a.table[j][k]-=b*a.table[i][k];
-							table[j][k]-=b*table[i][k];
+						for(int j=i+1;j<wide;j++)					
+						{
+							element b=table[j][i]/table[i][i];
+							for(int k=i;k<wide;k++)
+							{	
+								a.table[j][k]-=b*a.table[i][k];
+								table[j][k]-=b*table[i][k];
+							}
 						}
-					}
 				}
 	
 			return(a);
 		}
 
-		constdouble Determ()
+		Matrix ToDiagDownWith(const Matrix<element>& a)
 		{	
-			det=1;
-
-			Matrix<element> table1(*this);
-			Matrix<element> just(*this);
-			table1=table1.ToDiag(just);
+			element co;
 			
-			for(int i=0;i<wide;i++)
-				det*=table1.table[i][i];
-			return(det);	
+			for(int i=wide-1;i>0;i--)
+				
+				{
+					if(table[i][i]==0)
+					{
+						int p=i;
+						while((table[p][i]==0)&&(p>=0)){p--;};
+						for(int k=wide-1;k>=0;k--)
+						{
+							co=table[p][k];
+							table[p][k]=table[i][k];
+							table[i][k]=co;
+							co=a.table[p][k];
+							a.table[p][k]=a.table[i][k];
+							a.table[i][k]=co;
+						};
+						det*=-1;
+					}	
+					
+					
+					if(table[i][i]!=0)
+						for(int j=i-1;j>=0;j--)
+						{	
+							element b=table[j][i]/table[i][i];
+							for(int k=wide-1;k>=i;k--)
+							{	
+								a.table[j][k]-=b*a.table[i][k];
+								table[j][k]-=b*table[i][k];
+							}
+						}
+				}
+	
+			return(a);
+		}
+
+		
+		const double Determ()
+		{	
+			if(wide==high)
+			{
+				det=1;
+
+				Matrix<element> table1(*this);
+				table1.ToDiagUp();
+			
+				for(int i=0;i<wide;i++)
+					det*=table1.table[i][i];
+				return(det);
+			}
+			else
+				cout<<"error";	
+				return(0);
 		};
 			
 		const Matrix Reversed()
 		{
-			double s; element co,b;
-			Matrix<element> edinst(wide,1);
-			Matrix<element> table1(*this);
-			for(int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-					if(i==j)
-					{
-						edinst.table[i][j]=1;
-					} 
-					else 
-					{
-						edinst.table[i][j]=0;
-					};
-			s=Determ();
-			edinst=table1.ToDiag(edinst);
-
-			edinst=edinst.Trans();
-			table1=table1.Trans();
-			
-			edinst=table1.ToDiag(edinst);
-			
-			for(int i=0;i<wide;i++)
-				if(table1.table[i][i]!=0)
-					edinst.table[i][i]*=1/table1.table[i][i];
-			
-			edinst=edinst.Trans();	
-			if(s==0)
-				cout<<"Обратной не существует"; 
-			else		
-			return(edinst);
-			
+			if(high==wide)
+			{
+				Matrix<element> edinst(wide,high);
+				Matrix<element> table1(*this);
+				table1.ToDiagUpWith(edinst);
+				table1.ToDiagDownWith(edinst);
+				
+				for(int i=0;i<wide;i++)
+					if(table1.table[i][i]!=0)
+						for(int j=0;j<wide;j++)
+							edinst.table[i][j]*=1.0/table1.table[i][i];					
+				
+				return(edinst);
+			}
+			else
+			{
+				cout<<"error";
+				return(*this);
+			}
 		};
 		
 		const Matrix operator*(Matrix & other)
 		{
-			element b;
-			Matrix mult(wide,1);
-			for (int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-				{
-					b=0;
-					for(int a=0;a<wide;a++)
-					b+=table[i][a]*other.table[a][j];
-					mult.table[i][j]=b;
-				};
-			return(mult);
+			if(high==other.wide)
+			{
+				element b;
+				Matrix mult(wide,high);
+				for (int i=0;i<high;i++)
+					for(int j=0;j<wide;j++)
+					{
+						b=0;
+						for(int a=0;a<wide;a++)
+						b+=table[a][i]*other.table[j][a];
+						mult.table[i][j]=b;
+					};
+				return(mult);
+			}
+			else
+				cout<<"error";
+				return(*this);
 		};
 
 		const Matrix operator+(Matrix & other)
 		{
-			Matrix sum(wide,1);
-			for (int i=0;i<wide;i++)
-				for(int j=0;j<wide;j++)
-					sum.table[i][j]=table[i][j]+other.table[i][j];
-			return(sum);
+			if((high == other.high) && (wide == other.wide))
+			{
+				Matrix sum(wide);
+				for (int i=0;i<wide;i++)
+					for(int j=0;j<wide;j++)
+						sum.table[i][j]=table[i][j]+other.table[i][j];
+				return(sum);
+			}
+			else
+				cout<<"error";
+				return(*this);
 		};
 
 		element *operator[](int i)
 		{
 			return(table[i]);
 		};
-
-
-	
 		
-
+		
 };
 
 
 
 int main(){
-	int i,j; 
-	Matrix<double> odin(3);
-	odin.PrintTable();
-	printf("%.2lf" , odin.Determ());
 	
-	printf("\n Обратная матрица \n");
-	Matrix<double> odint(odin.Reversed());
-	odint.PrintTable();	
 	
 	return(0);
 };
