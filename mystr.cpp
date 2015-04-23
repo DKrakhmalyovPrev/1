@@ -65,7 +65,7 @@ class String
 		
 		void PopFrom(int i)
 		{
-			for(int j=i-1; j<line.size()-1; j++)
+			for(int j=i; j<line.size()-1; j++)
 				line[j]=line[j+1];
 			line.pop_back();
 		}
@@ -109,9 +109,35 @@ ostream& operator<<(ostream& os, const String& s)
 	return os;
 }
 
+int test1()
+{
+	String r("Добрый день.");
+	String c("Реализация класса строк.");
+	c=c.Sum(r,c);
+	for(int i=r.Size()-1; i>=0; i--)
+		c.PopFrom(i);
+	const char* s ="Здравствуйте.";
+	for(int i=0;i<strlen(s);i++)
+		c.PushInto(i,s[i]);
+	String q("Здравствуйте.Реализация класса строк.");
+	return(1-c.Cmp(c,q));
+}	
+	
+int test2()
+{	
+	String r("glksrglsgnsk gnel nglskeg nsog 3ion lgn gs3-2=5986");
+	String c(r);
+	for(int i=r.Size()-1; i>=5; i--)
+		r.PopFrom(i);
+	for(int i=0;i<5;i++)
+		c.PushBack(r[i]);
+	String q("glksrglsgnsk gnel nglskeg nsog 3ion lgn gs3-2=5986glksr");
+	return(1-c.Cmp(c,q));
+}
+
 int main()
 {
-	String c;
+	cout<<test1()<<" "<<test2();
 	return(0);
 	
 }
