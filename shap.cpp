@@ -1,14 +1,15 @@
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
 
 using namespace std;
-
 
 class Point
 {
 	friend class Segment;
 	friend class Vector;
+	friend class Quadre;
 	private:		
 		double x,y;
 	public:
@@ -30,6 +31,8 @@ class Point
 		double Gety(){return(y);};
 		void Sety(double j){y=j;};
 		void Setx(double j){x=j;};
+	
+		
 		
 };
 
@@ -87,13 +90,15 @@ class Segment
 				return(0);
 		} 
 		
-		const int LanePoint(Segment& seg, Point& po)
+		const int LanePoint(Segment& seg, Point po)
 		{
 			seg.Lane();
 			if( seg.A*po.x + seg.B*po.y > seg.C) return(-1);//Выше
 			if( seg.A*po.x + seg.B*po.y < seg.C) return(1); //Ниже
 			if( seg.A*po.x + seg.B*po.y == seg.C) return(0);//На прямой
 		}
+
+		
 	
 		
 };	
@@ -102,6 +107,7 @@ class Vector
 {
 	friend class Point;
 	friend class Segment;
+	friend class Quadre;
 	private:		
 		Point  st; Point end; 
 	public:
@@ -131,10 +137,111 @@ class Vector
 			Segment b(st, end);
 			return(b);
 		}
+		
+		Point MovePoint(Point & a)
+		{
+			Point q(a.x,a.y);
+			q.x+=end.x-st.x;
+			q.y+=end.y-st.y;
+			return(q);
+		};
 
+};
+
+class Quadre
+{
+	friend class Point;
+	friend class Vector;
+	friend class Segment;
+
+	private:
+		Point dots[4];
+	
+	public:
+		Quadre(){};
+		
+		Quadre(const Point& a,const Point& b,const Point& c,const Point& d)
+		{
+			dots[0]=a;
+			dots[1]=b; 
+			dots[2]=c; 
+			dots[3]=d;
+		};
+		
+		void ScanQuadre()
+		{
+			for(int i=0;i<4;i++)
+				dots[i].ScanPoint();
+		}
+		void MoveThisFuckingShit(int num, Vector& vec)
+		{
+			int step=0;
+			for(int i=0; i<4;i++)
+				for(int j=i+1; j<4; j++) 
+				{
+					if((i!=num)&&(j!=num)&&(j!=i))
+					{
+						Segment side(dots[i], dots[j]);
+						if( side.LanePoint(side, dots[num]) != side.LanePoint(side, vec.MovePoint(dots[num]) ) )
+							step++;
+					}
+				}
+			if(step%2==0)
+				dots[num]=vec.MovePoint(dots[num]);
+			else
+				cout<<"Нельзя двигать, сорян";
+		}
+		
+		void PrintQuadre()
+		{
+			for(int i=0;i<4;i++)
+			{
+				cout<<"Точка "<<i<<" = ("<<dots[i].x<<" , "<<dots[i].y<<")";
+				cout<<"\n";
+			}
+		}
+			
+};
+			
+
+int StartWork()
+{
+	Quadre a;
+	int got=0;
+	string command;
+	while(1)
+	{
+		
+		cin>>command;
+		if(command=="Задать")
+		{
+			a.ScanQuadre();
+			got=1;
+		}
+		else if(got==0)
+			cout<<"Сначала задай";
+		else if(command=="Двинуть")
+		{
+			int i;
+			cout<<"Какую двигаем";
+			cin>>i;
+			Vector q;
+			cout<<"Задай вектор";
+			q.ScanVector();
+			a.MoveThisFuckingShit(i,q);
+		}
+		else if(command=="Распечатать")
+		{
+			a.PrintQuadre();	
+		}
+		else if(command=="Закончить")
+			return(0);
+	}
 };
 
 int main()
 {
+	StartWork();
+	
 	return(0);
 }
