@@ -84,7 +84,7 @@ class Matrix
 					cin>>table[i][j];	
 		}
 	
-		double Trace()
+		double const Trace()
 		{
 			if(wide==high)
 			{
@@ -98,7 +98,7 @@ class Matrix
 				return(0);
 		};
 
-		Matrix Trans()
+		Matrix const Trans()
 		{
 			if(high==wide)
 			{
@@ -220,7 +220,7 @@ class Matrix
 		}
 
 		
-		const double Determ()
+		double const Determ()
 		{	
 			if(wide==high)
 			{
@@ -238,7 +238,7 @@ class Matrix
 				return(0);
 		};
 			
-		const Matrix Reversed()
+		Matrix const Reversed()
 		{
 			if(high==wide)
 			{
@@ -261,19 +261,19 @@ class Matrix
 			}
 		};
 		
-		const Matrix operator*(Matrix & other)
+		Matrix const operator*(Matrix & other)
 		{
 			if(high==other.wide)
 			{
 				element b;
-				Matrix mult(wide,high);
+				Matrix mult(wide,other.high);
 				for (int i=0;i<high;i++)
 					for(int j=0;j<wide;j++)
 					{
 						b=0;
 						for(int a=0;a<wide;a++)
 						b+=table[a][i]*other.table[j][a];
-						mult.table[i][j]=b;
+						mult.table[j][i]=b;
 					};
 				return(mult);
 			}
@@ -282,7 +282,7 @@ class Matrix
 				return(*this);
 		};
 
-		const Matrix operator+(Matrix & other)
+		Matrix const operator+(Matrix & other)
 		{
 			if((high == other.high) && (wide == other.wide))
 			{
@@ -308,6 +308,11 @@ class Matrix
 
 
 int main(){
+	Matrix<double> a(3,3);
+	a.ScanMatrix();
+	Matrix<double> b(a.Reversed());
+	a=a*b;
+	a.PrintTable();
 	
 	
 	return(0);
