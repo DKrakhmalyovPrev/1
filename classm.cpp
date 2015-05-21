@@ -1,14 +1,8 @@
 #include <iostream>
-
 #include <stdio.h>
-
 #include <cstdlib>
-
 #include <math.h>
-
 #include<ctime>
-
-
 using namespace std;
 
 template<typename element>
