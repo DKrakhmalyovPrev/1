@@ -173,7 +173,7 @@ class Quadre
 			for(int i=0;i<4;i++)
 				dots[i].ScanPoint();
 		}
-		void MoveThisFuckingShit(int num, Vector& vec)
+		void MoveThis(int num, Vector& vec)
 		{
 			int step=0;
 			for(int i=0; i<4;i++)
@@ -189,7 +189,7 @@ class Quadre
 			if(step%2==0)
 				dots[num]=vec.MovePoint(dots[num]);
 			else
-				cout<<"Нельзя двигать, сорян";
+				cout<<"Нельзя двигать";
 		}
 		
 		void PrintQuadre()
@@ -228,7 +228,7 @@ int StartWork()
 			Vector q;
 			cout<<"Задай вектор";
 			q.ScanVector();
-			a.MoveThisFuckingShit(i,q);
+			a.MoveThis(i,q);
 		}
 		else if(command=="Распечатать")
 		{
